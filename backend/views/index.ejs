@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>home</title>
-    <script
-    src="https://cdn.socket.io/3.1.1/socket.io.min.js"
-    integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO"
-    crossorigin="anonymous"
-  ></script>
-  </head>
-
-  <body>
+<%- include('header') -%>
     <div class="content">
       <h1>Hello <%=name%></h1>
     </div>
-    <a href="/login">login</a>
+    <a href="/login">login</a> <br>
+    <a href="/register">register</a>
 
-    <!-- SOCKET IO  -->
-    <!-- <script src="/socket.io/socket.io.js" defer></script> -->
-    <!-- <script src="./js/main.js" defer></script> -->
-    <script>
-      console.log('hi');
-      let socket = io();
-      socket.on('test', (data) => {
-        console.log(data);
-      });
-      socket.emit('ping', 'pong')
-    </script>
-  </body>
-</html>
+<%- include('footer') -%>
+    

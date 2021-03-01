@@ -1,0 +1,20 @@
+<%- include('header') -%>
+
+<div class="content">
+  <h1>Register</h1>
+  <form action="/register" method="post">
+    <label for="username">username</label><br />
+    <input type="text" name="username" /><br />
+
+    <label for="username">email</label><br />
+    <input type="email" name="email" /><br />
+
+    <label for="username">password</label><br />
+    <input type="password" name="password" />
+
+    <button type="submit">register</button>
+  </form>
+</div>
+<a href="/">home</a>
+<a href="/login">login</a>
+<%- include('footer') -%>
