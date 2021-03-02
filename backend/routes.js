@@ -5,7 +5,7 @@ const User = model('User');
 module.exports = (app) => {
   app.get("/", (req, res) => {
     console.log("new call home");
-    return res.render("index", { name: "anass" });
+    return res.render("index", { name: req?.user?.username || '' });
   });
 
   app.get("/register", (req, res) => {

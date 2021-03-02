@@ -4,11 +4,13 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const passportSocketIo = require("passport.socketio");
+const cookieParser = require("cookie-parser");
 
-require('./users.model');
+require("./users.model");
 
-const routes = require('./routes');
-const auth = require('./auth');
+const routes = require("./routes");
+const auth = require("./auth");
 
 try {
   mongoose.connect(
@@ -22,11 +24,15 @@ try {
   console.log(e);
 }
 
+const MongoStore = require("connect-mongo").default;
+const store = MongoStore.create({ mongoUrl: process.env.MONGO_URI });
+
 const sessionMiddleware = session({
   secret: "razouq_secret",
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 },
+  cookie: { secure: false },
+  store,
 });
 
 const app = express();
@@ -43,30 +49,33 @@ app.use(passport.session());
 routes(app);
 auth(app);
 
-
-
-const user = {
-  _id: "1",
-  username: "bendarsi@gmail.com",
-  password: "razouq",
-};
-
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
+function onAuthorizeSuccess(data, accept) {
+  console.log("successful connection to socket.io");
+  accept(null, true);
+}
 
-io.use((socket, next) => {
-  sessionMiddleware(socket.request, socket.request.res, next);
-});
+function onAuthorizeFail(data, message, error, accept) {
+  if (error) throw new Error(message);
+  console.log("failed connection to socket.io:", message);
+  accept(null, false);
+}
+
+io.use(
+  passportSocketIo.authorize({
+    cookieParser: cookieParser,
+    key: "connect.sid",
+    secret: "razouq_secret",
+    store,
+    success: onAuthorizeSuccess,
+    fail: onAuthorizeFail,
+  })
+);
 
 io.on("connection", (socket) => {
-  const session = socket.request.session;
-  session.save();
-  socket.on("ping", (data) => {
-    console.log(data);
-  });
-  socket.emit("test", "teeest");
-  console.log(`socket.io connected: ${socket.id}`);
+  console.log(socket);
 });
 
 http.listen(3000, () => {
