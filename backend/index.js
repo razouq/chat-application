@@ -36,9 +36,9 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(sessionMiddleware);
 
 routes(app);
 auth(app);
