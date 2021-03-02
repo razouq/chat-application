@@ -8,6 +8,8 @@ const passportSocketIo = require("passport.socketio");
 const cookieParser = require("cookie-parser");
 
 require("./users.model");
+const {model} = require('mongoose');
+const User = model('User');
 
 const routes = require("./routes");
 const auth = require("./auth");
@@ -78,6 +80,16 @@ io.on("connection",async (socket) => {
   console.log("socket id : ", socket.id, socket.request.user);
   const {user} = socket.request;
   user.socketId = socket.id;
+  socket.on('message', async ({message, userId}) => {
+    console.log('new message', message);
+    let user;
+    try {
+      user = await User.findById(userId).select('username socketId');
+    } catch(e) {
+      console.log(e);
+    }
+    io.to(user.socketId).emit('new message', {message, sender: user.username});
+  })
   await user.save();
 });
 

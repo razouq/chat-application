@@ -7,10 +7,10 @@
 
     <h3><%- user.username %></h3>
     <ul id="messages">
-      
+
     </ul>
-    <form action="">
-      <input type="text" name="message"><br>
+    <form onsubmit="return sendMessage()">
+      <input id="message" type="text" name="message"><br>
       <button type="submit">send</button>
     </form>
 
