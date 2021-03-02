@@ -74,8 +74,11 @@ io.use(
   })
 );
 
-io.on("connection", (socket) => {
-  console.log(socket);
+io.on("connection",async (socket) => {
+  console.log("socket id : ", socket.id, socket.request.user);
+  const {user} = socket.request;
+  user.socketId = socket.id;
+  await user.save();
 });
 
 http.listen(3000, () => {

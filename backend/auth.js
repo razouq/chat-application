@@ -12,7 +12,6 @@ module.exports = (app) => {
     } catch (e) {
       console.log(e);
     }
-    console.log(user);
     // find the user
     done(null, user);
   });
