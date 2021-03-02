@@ -93,6 +93,8 @@ io.on("connection",async (socket) => {
   await user.save();
 });
 
-http.listen(3000, () => {
-  console.log("Listenning on port 3000");
+const PORT = process.env.PORT || 3000
+
+http.listen(PORT, () => {
+  console.log("Listenning on port", PORT);
 });
