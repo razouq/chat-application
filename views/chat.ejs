@@ -1,0 +1,11 @@
+<%- include('header') -%>
+<div class="content">
+  <h3><%- user.username %></h3>
+  <ul id="messages"></ul>
+  <form onsubmit="return sendMessage()">
+    <input id="message" type="text" name="message" /><br />
+    <button type="submit">send</button>
+  </form>
+</div>
+
+<%- include('footer') -%>

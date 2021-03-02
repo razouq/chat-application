@@ -1,0 +1,10 @@
+<%- include('header') -%>
+<div class="content">
+  <h1>Users</h1>
+  <ul>
+    <% users.forEach(function(user){ %>
+    <li><a href="/chat?userid=<%- user.id %>"><%- user.username %></a></li>
+    <% }); %>
+  </ul>
+</div>
+<%- include('footer') -%>
