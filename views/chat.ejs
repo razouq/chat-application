@@ -1,10 +1,10 @@
 <%- include('header') -%>
-<div class="content">
+<div class="p-4">
   <h3><%- user.username %></h3>
   <ul id="messages"></ul>
   <form onsubmit="return sendMessage()">
-    <input id="message" type="text" name="message" /><br />
-    <button type="submit">send</button>
+    <input class="form-control" id="message" type="text" name="message" /><br />
+    <button class="btn btn-success" type="submit">send</button>
   </form>
 </div>
 

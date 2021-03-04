@@ -1,17 +1,24 @@
 <%- include('header') -%>
-<div class="content">
+<div class="p-4">
   <h1>Register</h1>
   <form action="/register" method="post">
-    <label for="username">username</label><br />
-    <input type="text" name="username" /><br />
 
-    <label for="username">email</label><br />
-    <input type="email" name="email" /><br />
+    <div class="mb-3">
+      <label class="form-label" for="username">username</label><br />
+      <input class="form-control" type="text" name="username" /><br />
+    </div>
 
-    <label for="username">password</label><br />
-    <input type="password" name="password" />
+    <div class="mb-3">
+      <label class= for="username">email</label><br />
+      <input class="form-control" type="email" name="email" /><br />
+    </div>
 
-    <button type="submit">register</button>
+    <div class="mb-3">
+      <label class= for="username">password</label><br />
+      <input class="form-control" type="password" name="password" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">register</button>
   </form>
 </div>
 <%- include('footer') -%>

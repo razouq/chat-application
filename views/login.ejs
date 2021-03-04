@@ -1,14 +1,18 @@
 <%- include('header') -%>
 
-<div class="content">
-  <h1>login page</h1>
+<div class="p-4 row justify-content-center mw-75">
+  <h1>Login</h1>
   <form action="/login" method="post">
     <br />
-    <label for="email">email</label><br />
-    <input type="text" name="email" /><br />
-    <label for="password">password</label><br />
-    <input type="password" name="password" /><br />
-    <button type="submit">login</button>
+    <div class="mb-3">
+      <label class="form-label" for="email">email</label>
+      <input class="form-control" type="text" name="email" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="password">password</label>
+      <input class="form-control" type="password" name="password" />
+    </div>
+    <button class="btn btn-primary" type="submit">login</button>
   </form>
 </div>
 
