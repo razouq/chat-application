@@ -1,15 +1,14 @@
 let socket = io();
-socket.on("test", (data) => {
+socket.on('test', data => {
   console.log(data);
 });
 
 /**
  * receive a new message
  */
-socket.on('new message', ({message, sender}) => {
+socket.on('new message', ({ message, sender }) => {
   addMessage(message, sender);
 });
-
 
 /**
  * send a new Message
@@ -21,15 +20,15 @@ function sendMessage() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const userId = urlParams.get('userid');
-  socket.emit('message', {message, userId});
-  document.getElementById('message').value = "";
+  socket.emit('message', { message, userId });
+  document.getElementById('message').value = '';
   return false;
 }
 
 /**
  * add a message to the list of messages
- * @param {*} message 
- * @param {*} sender 
+ * @param {*} message
+ * @param {*} sender
  */
 function addMessage(message, sender) {
   const ul = document.getElementById('messages');

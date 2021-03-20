@@ -1,10 +1,10 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
-const { model } = require("mongoose");
-const User = model("User");
+const { model } = require('mongoose');
+const User = model('User');
 
-module.exports = (app) => {
+module.exports = app => {
   passport.deserializeUser(async (id, done) => {
     let user;
     try {
@@ -23,8 +23,8 @@ module.exports = (app) => {
   passport.use(
     new LocalStrategy(
       {
-        usernameField: "email",
-        passwordField: "password",
+        usernameField: 'email',
+        passwordField: 'password',
       },
       async (email, password, done) => {
         // user mongoose to validate user
@@ -38,7 +38,7 @@ module.exports = (app) => {
           return done(null, false);
         }
         return done(null, user);
-      }
-    )
+      },
+    ),
   );
 };
