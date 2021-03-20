@@ -3,13 +3,19 @@ const { model } = require("mongoose");
 const { render } = require("ejs");
 const User = model('User');
 
+const requireAuth = (req, res, next) => {
+  const {user} = req;
+  if(user) return next();
+  return res.redirect('/');
+}
+
 module.exports = (app) => {
   app.get("/", (req, res) => {
     console.log("new call home");
     return res.render("index", { name: req?.user?.username || '' });
   });
 
-  app.get("/users", async (req, res) => {
+  app.get("/users",requireAuth, async (req, res) => {
     let users;
     try {
       users = await User.find().select('username');
@@ -62,4 +68,9 @@ module.exports = (app) => {
       res.redirect("/");
     }
   );
+
+  app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  })
 };
