@@ -11,7 +11,6 @@ const requireAuth = (req, res, next) => {
 
 module.exports = (app) => {
   app.get("/", (req, res) => {
-    console.log("new call home");
     return res.render("index", { name: req?.user?.username || '' });
   });
 

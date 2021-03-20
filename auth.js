@@ -35,10 +35,8 @@ module.exports = (app) => {
           console.log(e);
         }
         if (password !== user.password) {
-          console.log("failed auth");
           return done(null, false);
         }
-        console.log("success login");
         return done(null, user);
       }
     )

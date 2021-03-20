@@ -8,6 +8,7 @@ const passportSocketIo = require("passport.socketio");
 const cookieParser = require("cookie-parser");
 
 require("./users.model");
+
 const {model} = require('mongoose');
 const User = model('User');
 
@@ -27,10 +28,12 @@ try {
 }
 
 const MongoStore = require("connect-mongo").default;
+
+// socket and http should share the same session (stored in mongoDB)
 const store = MongoStore.create({ mongoUrl: process.env.MONGO_URI });
 
 const sessionMiddleware = session({
-  secret: "razouq_secret",
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: true,
   cookie: { secure: false },
@@ -54,25 +57,13 @@ auth(app);
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-function onAuthorizeSuccess(data, accept) {
-  console.log("successful connection to socket.io");
-  accept(null, true);
-}
-
-function onAuthorizeFail(data, message, error, accept) {
-  if (error) throw new Error(message);
-  console.log("failed connection to socket.io:", message);
-  accept(null, false);
-}
-
 io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
+    // cookie name, check cookie section in chrome's dev tool
     key: "connect.sid",
-    secret: "razouq_secret",
+    secret: process.env.SESSION_SECRET,
     store,
-    success: onAuthorizeSuccess,
-    fail: onAuthorizeFail,
   })
 );
 
@@ -81,7 +72,6 @@ io.on("connection",async (socket) => {
   const {user} = socket.request;
   user.socketId = socket.id;
   socket.on('message', async ({message, userId}) => {
-    console.log('new message', message);
     let user;
     try {
       user = await User.findById(userId).select('username socketId');
