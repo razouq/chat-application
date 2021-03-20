@@ -7,10 +7,12 @@ const bodyParser = require('body-parser');
 const passportSocketIo = require('passport.socketio');
 const cookieParser = require('cookie-parser');
 
+require('./models/messages.model');
 require('./models/users.model');
 
 const { model } = require('mongoose');
 const User = model('User');
+const Message = model('Message');
 
 const routes = require('./routes');
 const auth = require('./auth');
