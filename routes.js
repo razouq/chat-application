@@ -11,7 +11,7 @@ const requireAuth = (req, res, next) => {
 
 module.exports = app => {
   app.get('/', (req, res) => {
-    return res.render('index', { name: req?.user?.username || '' });
+    return res.render('index', { name: req?.user?.username || '', authUser: req.user });
   });
 
   app.get('/users', requireAuth, async (req, res) => {
@@ -22,7 +22,7 @@ module.exports = app => {
     } catch (e) {
       console.log(e);
     }
-    return res.render('users', { users });
+    return res.render('users', { users, authUser: req.user });
   });
 
   app.get('/chat', async (req, res) => {
@@ -33,11 +33,11 @@ module.exports = app => {
     } catch (e) {
       console.log(e);
     }
-    return res.render('chat', { user });
+    return res.render('chat', { user, authUser: req.user });
   });
 
   app.get('/register', (req, res) => {
-    return res.render('register');
+    return res.render('register', {authUser: req.user});
   });
 
   app.post(
@@ -65,7 +65,7 @@ module.exports = app => {
   );
 
   app.get('/login', (req, res) => {
-    return res.render('login');
+    return res.render('login', {authUser: req.user});
   });
 
   app.post(

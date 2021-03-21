@@ -25,7 +25,7 @@ try {
       console.log('connected to DB');
     },
   );
-} catch (e) {
+} catch (e) { 
   console.log(e);
 }
 
@@ -85,6 +85,12 @@ io.on('connection', async socket => {
       message,
       sender: user.username,
     });
+    const messageObj = new Message({
+      message,
+      sender: user.id,
+      receiver: userId,
+    });
+    messageObj.save();
   });
   await user.save();
 });
