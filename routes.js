@@ -40,22 +40,29 @@ module.exports = app => {
     return res.render('register');
   });
 
-  app.post('/register', async (req, res, next) => {
-    const { username, email, password } = req.body;
-    const user = new User({
-      username,
-      email,
-      password,
-    });
+  app.post(
+    '/register',
+    async (req, res, next) => {
+      const { username, email, password } = req.body;
+      const user = new User({
+        username,
+        email,
+        password,
+      });
 
-    try {
-      await user.save();
-    } catch (e) {
-      console.log(e);
-    }
+      try {
+        await user.save();
+      } catch (e) {
+        console.log(e);
+      }
 
-    return res.redirect('/');
-  });
+      return next();
+    },
+    passport.authenticate('local', { failureRedirect: '/login' }),
+    (req, res) => {
+      res.redirect('/');
+    },
+  );
 
   app.get('/login', (req, res) => {
     return res.render('login');

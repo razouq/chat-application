@@ -34,6 +34,9 @@ module.exports = app => {
         } catch (e) {
           console.log(e);
         }
+        if(!user) {
+          return done(null, false);
+        }
         if (password !== user.password) {
           return done(null, false);
         }
