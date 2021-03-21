@@ -87,7 +87,7 @@ io.on('connection', async socket => {
     });
     const messageObj = new Message({
       message,
-      sender: user.id,
+      sender: socket.request.user.id,
       receiver: userId,
     });
     messageObj.save();

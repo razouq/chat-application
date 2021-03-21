@@ -2,6 +2,7 @@ const passport = require('passport');
 const { model } = require('mongoose');
 const { render } = require('ejs');
 const User = model('User');
+const Message = model('Message');
 
 const requireAuth = (req, res, next) => {
   const { user } = req;
@@ -11,7 +12,10 @@ const requireAuth = (req, res, next) => {
 
 module.exports = app => {
   app.get('/', (req, res) => {
-    return res.render('index', { name: req?.user?.username || '', authUser: req.user });
+    return res.render('index', {
+      name: req?.user?.username || '',
+      authUser: req.user,
+    });
   });
 
   app.get('/users', requireAuth, async (req, res) => {
@@ -28,16 +32,23 @@ module.exports = app => {
   app.get('/chat', async (req, res) => {
     const { userid } = req.query;
     let user;
+    let messages;
     try {
       user = await User.findById(userid).select('username');
+      messages = await Message.find({
+        $or: [
+          { receiver: req.user.id, sender: userid },
+          { sender: req.user.id, receiver: userid },
+        ],
+      });
     } catch (e) {
       console.log(e);
     }
-    return res.render('chat', { user, authUser: req.user });
+    return res.render('chat', { user, authUser: req.user, messages });
   });
 
   app.get('/register', (req, res) => {
-    return res.render('register', {authUser: req.user});
+    return res.render('register', { authUser: req.user });
   });
 
   app.post(
@@ -65,7 +76,7 @@ module.exports = app => {
   );
 
   app.get('/login', (req, res) => {
-    return res.render('login', {authUser: req.user});
+    return res.render('login', { authUser: req.user });
   });
 
   app.post(

@@ -32,8 +32,6 @@ function sendMessage() {
  */
 function addMessage(message, sender) {
   const ul = document.getElementById('messages');
-  ul.classList.add('list-group');
-  ul.classList.add('mb-3');
   const li = document.createElement('li');
   li.className = 'list-group-item';
   li.appendChild(document.createTextNode(`${sender} : ${message}`));
